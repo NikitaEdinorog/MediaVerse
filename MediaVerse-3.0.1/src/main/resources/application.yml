@@ -1,0 +1,26 @@
+server:
+  port: 8089
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mediaverse_db
+    username: mediaverse_manager
+    password: MediaVersePassword
+  main:
+    allow-circular-references: true
+  liquibase:
+    change-log: config/db/changelog/db.changelog-master.yml
+    password: MediaVersePassword
+    user: mediaverse_manager
+    url: jdbc:postgresql://localhost:5432/mediaverse_db
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      open-in-view: off
+
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days

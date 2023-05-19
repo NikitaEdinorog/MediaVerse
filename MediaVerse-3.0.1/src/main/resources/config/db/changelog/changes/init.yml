@@ -1,0 +1,418 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table users
+      author: bondar.n
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: second_name
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(30)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: registration_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(15)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: users
+
+  - changeSet:
+      id: create table passwords
+      author: bondar.n
+      changes:
+        - createTable:
+            tableName: passwords
+            columns:
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: password
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: FK_passwords_to_users
+            baseTableName: passwords
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+      rollback:
+        - dropTable:
+            tableName: passwords
+
+  - changeSet:
+      id: create table subscribes
+      author: bondar.n
+      changes:
+        - createTable:
+            tableName: subscribes
+            columns:
+              - column:
+                  name: author_id
+                  type: UUID
+              - column:
+                  name: subscriber_id
+                  type: UUID
+        - addPrimaryKey:
+            constraintName: PK_composite_subscribes
+            tableName: subscribes
+            columnNames: author_id, subscriber_id
+
+        - addForeignKeyConstraint:
+            constraintName: FK_in_subscribes_to_subscriber
+            baseTableName: subscribes
+            baseColumnNames: subscriber_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            constraintName: FK_in_subscribes_to_author
+            baseTableName: subscribes
+            baseColumnNames: author_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+      rollback:
+        - dropTable:
+            tableName: subscribes
+
+
+  - changeSet:
+      id: create post table
+      author: bondar.n
+      changes:
+        - createTable:
+            tableName: posts
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tag_list
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: FK_in_posts_to_users
+            baseTableName: posts
+            baseColumnNames: author_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            tableName: posts
+
+  - changeSet:
+      id: create table likes
+      author: bondar.n
+      changes:
+        - createTable:
+            tableName: likes
+            columns:
+              - column:
+                  name: post_id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: FK_in_likes_to_posts
+            baseTableName: likes
+            baseColumnNames: post_id
+            referencedTableName: posts
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            constraintName: FK_in_likes_to_users
+            baseTableName: likes
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            tableName: likes
+
+  - changeSet:
+      id: create table coments
+      author: bondar.n
+      changes:
+        - createTable:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: post_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: comment_text
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: FK_in_comments_to_users
+            baseTableName: comments
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+
+        - addForeignKeyConstraint:
+            constraintName: FK_in_comments_to_posts
+            baseTableName: comments
+            baseColumnNames: post_id
+            referencedTableName: posts
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            tableName: comments
+
+
+  - changeSet:
+      id: create table images_names
+      author: bondar.n
+      changes:
+        - createTable:
+            tableName: images_names
+            columns:
+              - column:
+                  name: post_id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: image_1
+                  type: varchar(40)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image_2
+                  type: varchar(40)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: image_3
+                  type: varchar(40)
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: image_4
+                  type: varchar(40)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: image_5
+                  type: varchar(40)
+                  constraints:
+                    nullable: true
+
+        - addForeignKeyConstraint:
+            constraintName: FK_in_images_names_to_posts
+            baseTableName: images_names
+            baseColumnNames: post_id
+            referencedTableName: posts
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            tableName: images_names
+
+  - changeSet:
+      id: create seq for tags
+      author: bondar.n
+      changes:
+        - createSequence:
+            sequenceName: tags_id_seq
+            startValue: 1
+            dataType: bigint
+            incrementBy: 1
+
+      rollback:
+        - dropSequence:
+            sequenceName: tags_id_seq
+
+  - changeSet:
+      id: create index on username in users
+      author: bondar.n
+      changes:
+        - createIndex:
+            indexName: index_on_username_in_users
+            tableName: users
+            columns:
+              - column:
+                  name: username
+
+      rollback:
+        - dropIndex:
+            tableName: users
+            indexName: index_on_username_in_users
+
+
+  - changeSet:
+      id: create tag table
+      author: bondar.n
+      changes:
+        - createTable:
+            tableName: tags
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  defaultValueSequenceNext: tags_id_seq
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: tags
+
+  - changeSet:
+      id: create table tokens
+      author: bondar.n
+      changes:
+        - createTable:
+            tableName: tokens
+            columns:
+              - column:
+                  name: token
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: type
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: revoked
+                  type: boolean
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: expired
+                  type: boolean
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: FK_tokens_to_users
+            baseTableName: tokens
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+      rollback:
+        - dropTable:
+            tableName: tokens
