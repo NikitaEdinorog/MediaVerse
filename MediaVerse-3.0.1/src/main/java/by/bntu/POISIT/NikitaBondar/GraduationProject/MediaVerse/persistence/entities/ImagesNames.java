@@ -19,22 +19,16 @@ import java.util.UUID;
 public class ImagesNames {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "names_id_seq_generator")
+    @SequenceGenerator(name = "names_id_seq_generator", sequenceName = "images_id_seq", allocationSize = 1)
+    private Long id;
+
     @Column(name = "post_id")
     private UUID postId;
 
-    @Column(name = "image_1")
-    private String image1Name;
+    @Column(name = "name")
+    private String imageName;
 
-    @Column(name = "image_2")
-    private String image2Name;
-
-    @Column(name = "image_3")
-    private String image3Name;
-
-    @Column(name = "image_4")
-    private String image4Name;
-
-    @Column(name = "image_5")
-    private String image5Name;
-
+    @Transient
+    private String path;
 }

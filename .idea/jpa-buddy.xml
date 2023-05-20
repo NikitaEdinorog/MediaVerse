@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpaBuddyIdeaProjectConfig">
+    <option name="defaultUnitInitialized" value="true" />
+    <option name="renamerInitialized" value="true" />
+    <option name="updateChangeLogPath" value="MediaVerse-3.0.1/src/main/resources/config/db/changelog/db.changelog-master.yml" />
+    <option name="updateDbConnectionName" value="8778c621-923e-4ae7-a296-04322488c86b" />
+  </component>
+</project>

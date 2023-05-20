@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'AvantGardeCTT';
+    src: url('AvantGardeCTT.eot');
+    src: url('AvantGardeCTT.eot?#iefix') format('embedded-opentype'),
+        url('AvantGardeCTT.woff2') format('woff2'),
+        url('AvantGardeCTT.woff') format('woff'),
+        url('AvantGardeCTT.ttf') format('truetype'),
+        url('AvantGardeCTT.svg#AvantGardeCTT') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

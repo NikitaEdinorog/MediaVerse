@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -29,12 +30,14 @@ public class Post {
 
     @Column(name = "author_id")
     private UUID authorId;
-
-    @Column(name = "tag_list")
-    private String tagList;
-
     @CreationTimestamp
     @Column(name = "timestamp")
     private Timestamp timestamp;
+
+    @Transient
+    List<Tag> tags;
+
+    @Transient
+    List<ImagesNames> images;
 
 }

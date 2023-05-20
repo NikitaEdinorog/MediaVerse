@@ -1,3 +1,6 @@
 databaseChangeLog:
   - include:
       file: config/db/changelog/changes/init.yml
+
+  - include:
+      file: config/db/changelog/changes/change_1.yml

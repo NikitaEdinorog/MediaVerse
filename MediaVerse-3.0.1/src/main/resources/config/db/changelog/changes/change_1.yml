@@ -1,0 +1,156 @@
+databaseChangeLog:
+  - changeSet:
+      author: bondar.n
+      id: "drop column tags in posts"
+      changes:
+        - dropColumn:
+            tableName: posts
+            columns:
+              - column:
+                  name: tag_list
+
+  - changeSet:
+      author: bondar.n
+      id: "add index on author_id in posts"
+      changes:
+        - createIndex:
+            indexName: index_on_author_in_posts
+            tableName: posts
+            columns:
+              - column:
+                  name: author_id
+
+  - changeSet:
+      author: bondar.n
+      id: "add index on name in tags"
+      changes:
+        - createIndex:
+            indexName: index_on_name_in_tags
+            tableName: tags
+            columns:
+              - column:
+                  name: name
+
+
+  - changeSet:
+      id: create seq for tags_posts
+      author: bondar.n
+      changes:
+        - createSequence:
+            sequenceName: tags_post_id_seq
+            startValue: 1
+            dataType: bigint
+            incrementBy: 1
+
+      rollback:
+        - dropSequence:
+            sequenceName: tags_post_id_seq
+
+
+  - changeSet:
+      author: bondar.n
+      id: create tags_posts_table
+      changes:
+        - createTable:
+            tableName: tags_posts
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  defaultValueSequenceNext: tags_post_id_seq
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: post_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tag_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+
+        - addForeignKeyConstraint:
+            constraintName: FK_in_tags_posts_to_posts
+            baseTableName: tags_posts
+            baseColumnNames: post_id
+            referencedTableName: posts
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            constraintName: FK_in_tags_posts_to_tags
+            baseTableName: tags_posts
+            baseColumnNames: tag_id
+            referencedTableName: tags
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            tableName: tags_posts
+
+
+
+  - changeSet:
+      author: bondar.n
+      id: drop image_names table
+      changes:
+        - dropTable:
+            tableName: images_names
+
+
+  - changeSet:
+      id: create seq for images
+      author: bondar.n
+      changes:
+        - createSequence:
+            sequenceName: images_id_seq
+            startValue: 1
+            dataType: bigint
+            incrementBy: 1
+
+      rollback:
+        - dropSequence:
+            sequenceName: images_id_seq
+
+
+  - changeSet:
+      author: bondar.n
+      id: create new image_names table
+      changes:
+        - createTable:
+            tableName: images_names
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  defaultValueSequenceNext: images_id_seq
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: post_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(40)
+                  constraints:
+                    nullable: false
+
+
+        - addForeignKeyConstraint:
+            constraintName: FK_in_images_to_posts
+            baseTableName: images_names
+            baseColumnNames: post_id
+            referencedTableName: posts
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            tableName: images_names

@@ -1,7 +1,8 @@
 import {useLocalState} from "../util/useLocalStorage";
 import {useState} from "react";
+import QueryBack from "../util/QueryBack";
 
-const Login = () => {
+const Login = ({nextUrl}) => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -9,19 +10,14 @@ const Login = () => {
     const [jwt, setJwt] = useLocalState("", "jwt");
 
     function authenticate() {
+
         const requestbody = {
             "username": username,
             "password": password
         }
 
-        fetch("auth/login", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "post",
-            body: JSON.stringify(requestbody)
-
-        }).then((response) => {
+        QueryBack("auth/login", "post", null, requestbody)
+            .then((response) => {
             if (response.status === 200) {
                 return Promise.all([response.json(), response.headers]);
             } else {
@@ -29,8 +25,9 @@ const Login = () => {
             }
         })
             .then(([body, headers]) => {
+                console.log("here");
                 setJwt(headers.get("authorization"));
-                window.location.href = "my-profile";
+                window.location.href = nextUrl ?  nextUrl : "/";
             })
             .catch((msg) => {
                 alert(msg);

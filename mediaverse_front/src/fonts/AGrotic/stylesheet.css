@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'a_Grotic';
+    src: url('AGrotic.eot');
+    src: url('AGrotic.eot?#iefix') format('embedded-opentype'),
+        url('AGrotic.woff2') format('woff2'),
+        url('AGrotic.woff') format('woff'),
+        url('AGrotic.ttf') format('truetype'),
+        url('AGrotic.svg#AGrotic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

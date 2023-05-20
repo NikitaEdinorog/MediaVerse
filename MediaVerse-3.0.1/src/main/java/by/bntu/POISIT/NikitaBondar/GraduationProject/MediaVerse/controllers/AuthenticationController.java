@@ -32,7 +32,7 @@ public class AuthenticationController {
   @Value("${application.security.jwt.refresh-token.expiration}")
   private long refreshExpiration;
 
-  @PostMapping("/register")
+  @PostMapping("register")
   public ResponseEntity<AuthenticationResponse> register(
       @RequestBody NewUserDTO request
   ) {

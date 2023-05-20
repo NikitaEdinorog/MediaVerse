@@ -7,6 +7,7 @@ import Homepage from "./homepage/homepage";
 import PrivateRoute from "./PrivateRoute/PrivateRoutes";
 import MyProfile from "./my-profile/MyProfile";
 import Register from "./register/Register";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
