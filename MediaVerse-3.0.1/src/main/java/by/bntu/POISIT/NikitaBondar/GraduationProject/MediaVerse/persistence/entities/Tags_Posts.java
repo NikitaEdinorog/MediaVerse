@@ -25,4 +25,12 @@ public class Tags_Posts
     @Column(name = "tag_id")
     private Long tagId;
 
+    public Tags_Posts(UUID postId, Long tagId) {
+        this.postId = postId;
+        this.tagId = tagId;
+    }
+
+    public Tags_Posts(UUID post) {
+        this.postId = post;
+    }
 }

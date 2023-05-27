@@ -111,7 +111,7 @@ public class AuthenticationService {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String authHeader = request.getHeader(HttpHeaders.SET_COOKIE);
         final String refreshToken;
         final String username;
         if (authHeader == null ||!authHeader.startsWith("Bearer ")) {

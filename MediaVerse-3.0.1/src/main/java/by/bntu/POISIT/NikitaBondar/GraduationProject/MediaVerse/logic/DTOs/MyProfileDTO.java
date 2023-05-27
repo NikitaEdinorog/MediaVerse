@@ -16,8 +16,5 @@ public class MyProfileDTO {
 
     private UserDTO user;
     private List<Post> posts;
-    private String userImagePath;
-
-
 
 }

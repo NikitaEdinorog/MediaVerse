@@ -8,6 +8,8 @@ import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.enti
 import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.entities.Role;
 import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.entities.User;
 import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.managers.UserManager;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import java.util.UUID;
 
 
 @Service
+@Log4j2
 public class UserService implements UserServiceInterface {
 
     Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -42,8 +45,7 @@ public class UserService implements UserServiceInterface {
                     new ServiceResponse.Builder<User>().buildError(ServiceError.NOT_FOUND) :
                     new ServiceResponse.Builder<User>().buildSuccess(UserOptional.get());
         } catch (RuntimeException e) {
-            logger.error("Unexpected error while querying user by username: {} - {}", e.getClass().getSimpleName(),
-                    e.getMessage());
+            exceptionLog(e);
             UserServiceResponse = new ServiceResponse.Builder<User>().buildError(ServiceError.UNKNOWN);
         }
 
@@ -63,8 +65,7 @@ public class UserService implements UserServiceInterface {
                     new ServiceResponse.Builder<User>().buildError(ServiceError.NOT_FOUND) :
                     new ServiceResponse.Builder<User>().buildSuccess(orderOptional.get());
         } catch (RuntimeException e) {
-            logger.error("Unexpected error while querying user by id: {} - {}", e.getClass().getSimpleName(),
-                    e.getMessage());
+            exceptionLog(e);
             orderServiceResponse = new ServiceResponse.Builder<User>().buildError(ServiceError.UNKNOWN);
         }
 
@@ -73,4 +74,7 @@ public class UserService implements UserServiceInterface {
     }
 
 
+    private void exceptionLog(Exception e) {
+        log.log(Level.ERROR, "Unexpected error: {} - {}", e.getClass().getSimpleName(), e.getMessage());
+    }
 }

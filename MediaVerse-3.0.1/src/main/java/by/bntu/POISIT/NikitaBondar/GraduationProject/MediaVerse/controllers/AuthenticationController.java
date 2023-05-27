@@ -49,7 +49,7 @@ public class AuthenticationController {
     httpHeadersConsumer.add(HttpHeaders.SET_COOKIE, refreshCookie.toString());
     httpHeadersConsumer.add(HttpHeaders.AUTHORIZATION, authenticationResponse.getAccessToken());
     ResponseEntity response = ResponseEntity.ok()
-            .headers(httpHeadersConsumer).body(request);
+            .headers(httpHeadersConsumer).body("null");
 
     return response;
   }

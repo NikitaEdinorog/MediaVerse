@@ -2,6 +2,7 @@ package by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.ent
 
 
 
+import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.util.ToStringBuilder;
 import jakarta.persistence.Id;
 import lombok.Data;
 
@@ -31,4 +32,19 @@ public class ImagesNames {
 
     @Transient
     private String path;
+
+    public ImagesNames(UUID postId, String imageName) {
+        this.imageName = imageName;
+        this.postId = postId;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("postId", postId)
+                .append("imageName", imageName)
+                .append("path", path)
+                .toString();
+    }
 }

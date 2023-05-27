@@ -2,12 +2,18 @@ import './App.css';
 import {useLocalState} from "./util/useLocalStorage";
 import React from "react";
 import {Route, Routes} from "react-router-dom";
-import Login from "./login/login";
+import LoginPage from "./components/login/LoginPage";
 import Homepage from "./homepage/homepage";
 import PrivateRoute from "./PrivateRoute/PrivateRoutes";
-import MyProfile from "./my-profile/MyProfile";
-import Register from "./register/Register";
+import MyProfile from "./components/my-profile/MyProfile";
+import RegisterPage from "./components/register/RegisterPage";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-utilities.css';
+import 'bootstrap/dist/css/bootstrap-grid.css';
+import './components/components.css';
+import './components/login/login.css';
+import PostPage from "./components/post/PostPage";
 
 function App() {
 
@@ -15,11 +21,11 @@ function App() {
 
     return (
         <Routes>
-
             <Route path={"/"} element={<Homepage/>}/>
-            <Route path={"sign-in"} element={<Login/>}/>
+            <Route path={"sign-in"} element={<LoginPage/>}/>
             <Route path={"my-profile"} element={ <PrivateRoute child={ <MyProfile/> }/> } />
-            <Route path={"sign-up"} element={<Register/>} />
+            <Route path={"new-post"} element={ <PrivateRoute child={ <PostPage/> }/> } />
+            <Route path={"sign-up"} element={<RegisterPage/>} />
 
         </Routes>
     );

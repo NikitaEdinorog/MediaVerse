@@ -138,7 +138,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: name
-                  type: varchar(40)
+                  type: varchar(45)
                   constraints:
                     nullable: false
 
@@ -154,3 +154,34 @@ databaseChangeLog:
       rollback:
         - dropTable:
             tableName: images_names
+
+
+  - changeSet:
+      id: add column avatar to users
+      author: bondar.n
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: avatar
+                  type: varchar(45)
+
+      rollback:
+        - dropColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: avatar
+
+
+  - changeSet:
+      id: change PK in likes
+      author: bondar.n
+      changes:
+        - dropPrimaryKey:
+            tableName: likes
+
+        - addPrimaryKey:
+            tableName: likes
+            columnNames: post_id, user_id

@@ -1,13 +1,12 @@
 package by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.managers;
 
+import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.logic.DTOs.NewTagLists;
+import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.logic.DTOs.ServiceResponse;
 import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.entities.ImagesNames;
 import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.entities.Post;
 import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.entities.Tag;
 import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.entities.Tags_Posts;
-import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.repositories.ImagesRepository;
-import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.repositories.PostsRepository;
-import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.repositories.TagsPostsRepository;
-import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.repositories.TagsRepository;
+import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.repositories.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,13 +21,18 @@ public class PostsManager {
 
     @Autowired
     private PostsRepository postsRepository;
+
     @Autowired
     private TagsPostsRepository tagsPostsRepository;
+
     @Autowired
     private TagsRepository tagsRepository;
 
     @Autowired
     private ImagesRepository imagesRepository;
+
+    @Autowired
+    private LikesRepository likesRepository;
 
     public Optional<Post> getPostById(UUID id){
         return postsRepository.findById(id);
@@ -48,5 +52,33 @@ public class PostsManager {
 
     public List<ImagesNames> getImagesByPostId(UUID id) {
         return imagesRepository.findByPostId(id);
+    }
+
+    public void saveNewOrder(Post newPost) {
+        postsRepository.save(newPost);
+    }
+
+    public List<Tag> getAllTags() {
+        return tagsRepository.findAll();
+    }
+
+    public void saveNewTagsPosts(NewTagLists newTagLists) {
+        System.out.println(newTagLists);
+        if (newTagLists.getNewTags().size() > 0){
+            tagsRepository.saveAll(newTagLists.getNewTags());
+            for (int i =0; i<newTagLists.getNewTags().size();i++){
+                newTagLists.getTagPostsToNewTags().get(i).setTagId(newTagLists.getNewTags().get(i).getId());
+            }
+            tagsPostsRepository.saveAll(newTagLists.getTagPostsToNewTags());
+        }
+        tagsPostsRepository.saveAll(newTagLists.getTagsPosts());
+    }
+
+    public void saveImages(List<ImagesNames> imagesNamesList) {
+        imagesRepository.saveAll(imagesNamesList);
+    }
+
+    public Long countLikesOnPost(UUID id) {
+        return likesRepository.countById_PostId(id);
     }
 }

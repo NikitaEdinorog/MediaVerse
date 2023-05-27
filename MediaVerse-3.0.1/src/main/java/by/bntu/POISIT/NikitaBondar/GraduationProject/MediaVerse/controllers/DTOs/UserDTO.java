@@ -1,6 +1,7 @@
 package by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.controllers.DTOs;
 
 import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.persistence.entities.User;
+import by.bntu.POISIT.NikitaBondar.GraduationProject.MediaVerse.util.FileWriter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +25,8 @@ public class UserDTO {
 
     private String description;
 
+    private String userImagePath;
+
     public UserDTO(User user)
     {
         this.id = user.getId();
@@ -31,6 +34,7 @@ public class UserDTO {
         this.secondName = user.getSecondName();
         this.username = user.getUsername();
         this.description = user.getDescription();
+        this.userImagePath = FileWriter.getUserAvatarPathForFront(user.getId().toString(),user.getAvatar());
     }
 
 }

@@ -51,6 +51,9 @@ public class User implements UserDetails {
     @Column(name = "registration_date")
     private Date registrationDate;
 
+    @Column(name = "avatar")
+    private String avatar;
+
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role")
